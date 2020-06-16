@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration
+
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<properties resource="dbconfig.properties"></properties>
+
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+
+	<!--  <typeAliases>
+		<package name="packages/bean" />
+	</typeAliases>-->
+
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor">
+			<!-- config params as the following -->
+			<!-- <property name="param1" value="value1" /> -->
+			<property name="reasonable" value="true" />
+		</plugin>
+	</plugins>
+
+	<!-- 环境，可以配置多个，default：指定采用哪个环境 -->
+	<environments default="test">
+		<!-- id：唯一标识 -->
+		<environment id="test">
+			<!-- 事务管理器，JDBC类型的事务管理器 -->
+			<transactionManager type="JDBC" />
+			<!-- 数据源，池类型的数据源 -->
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}" /> <!-- 配置了properties，所以可以直接引用 -->
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+		<environment id="development">
+			<!-- 事务管理器，JDBC类型的事务管理器 -->
+			<transactionManager type="JDBC" />
+			<!-- 数据源，池类型的数据源 -->
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}" /> <!-- 配置了properties，所以可以直接引用 -->
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+	</environments>
+
+	<!-- 在spring容器整合MyBatis时扫描了的话那这里就要注释掉 -->
+	<!-- <mappers> -->
+		<!-- <mapper resource="mapper/queryWebsitesMapper.xml" /> -->
+		<!-- <mapper resource="mapper/interfaceMapper.xml" /> -->
+	<!-- </mappers> -->
+</configuration>

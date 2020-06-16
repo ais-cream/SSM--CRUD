@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 -->
+<mapper namespace="packages.dao.WebsiteDao">
+   <!-- statement，内容：sql语句。id：唯一标识，随便写，在同一个命名空间下保持唯一
+      resultType：sql语句查询结果集的封装类型,tb_user即为数据库中的表
+      parameterType: 只有一个参数时才能写，而且此时又可不写，不推荐用。
+      @param：在接口有多个参数时每个参数都必须加此注解
+      只有一个参数时的特别地方：可以使用#{属性}来直接取传入对象的属性，多个参数时必须#{对象.属性}-->
+	<delete id="deleteWebsite">
+		delete from websites where id=#{id}
+	</delete>
+	<update id="updateWebsite">
+	  update websites set name=#{website.name},url=#{website.url},alexa=#{website.rank} where id=#{id}
+	</update>
+   <select id="queryWebsiteById" resultType="packages.bean.Website">
+      select id ID,name,url,alexa 'rank',country from websites where id = #{id}
+   </select>
+   <select id="queryAllWebsites" resultType="packages.bean.Website">
+      select id ID,name,url,alexa 'rank',country from websites
+   </select>
+   <select id="queryCountry" resultType="packages.bean.Country">
+      select country name from websites_country
+   </select>
+   <select id="addWebsite" >
+   	  insert into websites(name,url,alexa,country) values(#{name},#{url},#{rank},#{country})
+   </select>
+   <select id="queryParticalWebsites" resultType="packages.bean.Website">
+      select id ID,name,url,alexa 'rank',country from websites
+	  <where>
+	  	<if test="name!=''.toString()">
+          and name like concat('%',#{name},'%')
+        </if>
+        <if test="url!=''">
+          and url like concat('%',#{url},'%')
+        </if>
+        <if test="rank!= 0">
+         and cast(alexa as char) like concat('%',#{rank},'%')
+        </if>
+         and country = #{country}
+	  </where>
+               
+
+   </select>
+</mapper>
